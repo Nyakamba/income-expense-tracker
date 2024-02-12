@@ -90,9 +90,18 @@ app.put("/api/v1/accounts/:id", async (req, res) => {
   }
 });
 
+//GET/api/v1/accounts
+app.get("/api/v1/accounts", async (req, res) => {
+  try {
+    res.json({ msg: "Get all Accounts route" });
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 //transactions route
 //POST/api/v1/transctions
-app.post("/api/v1/transctions", async (req, res) => {
+app.post("/api/v1/transactions", async (req, res) => {
   try {
     res.json({ msg: "Create transaction route" });
   } catch (error) {
@@ -101,7 +110,7 @@ app.post("/api/v1/transctions", async (req, res) => {
 });
 
 //GET/api/v1/transctions
-app.get("/api/v1/transctions", async (req, res) => {
+app.get("/api/v1/transactions", async (req, res) => {
   try {
     res.json({ msg: "Get transactions route" });
   } catch (error) {
@@ -110,7 +119,7 @@ app.get("/api/v1/transctions", async (req, res) => {
 });
 
 //GEt/api/v1/transctions/:id
-app.post("/api/v1/transctions/:id", async (req, res) => {
+app.get("/api/v1/transactions/:id", async (req, res) => {
   try {
     res.json({ msg: "Get a single transaction route" });
   } catch (error) {
@@ -119,7 +128,7 @@ app.post("/api/v1/transctions/:id", async (req, res) => {
 });
 
 //DELETE/api/v1/transctions/:id
-app.delete("/api/v1/transctions/:id", async (req, res) => {
+app.delete("/api/v1/transactions/:id", async (req, res) => {
   try {
     res.json({ msg: "Delete transaction route" });
   } catch (error) {
@@ -128,7 +137,7 @@ app.delete("/api/v1/transctions/:id", async (req, res) => {
 });
 
 //PUT/api/v1/transctions/:id
-app.put("/api/v1/transctions/:id", async (req, res) => {
+app.put("/api/v1/transactions/:id", async (req, res) => {
   try {
     res.json({ msg: "Update transaction route" });
   } catch (error) {
