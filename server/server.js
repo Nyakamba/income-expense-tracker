@@ -27,8 +27,8 @@ app.post("/api/v1/users/login", async (req, res) => {
   }
 });
 
-//GET/api/v1/users/porofile/:id
-app.get("/api/v1/users/porofile/:id", async (req, res) => {
+//GET/api/v1/users/profile/:id
+app.get("/api/v1/users/profile/:id", async (req, res) => {
   try {
     res.json({ msg: "Profile route" });
   } catch (error) {
