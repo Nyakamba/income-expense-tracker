@@ -1,50 +1,27 @@
 const express = require("express");
+const {
+  createAccountCtrl,
+  getAccountCtrl,
+  deleteAccountCtrl,
+  updateAccountCtrl,
+  getAccountsCtrl,
+} = require("../../controllers/accounts/accountsCtrl");
 
 const accountsRoute = express.Router();
 
 //POST/api/v1/accounts
-accountsRoute.post("/", async (req, res) => {
-  try {
-    res.json({ msg: "Create Account route" });
-  } catch (error) {
-    res.json(error);
-  }
-});
+accountsRoute.post("/", createAccountCtrl);
 
 //GET/api/v1/accounts/:id
-accountsRoute.get("/:id", async (req, res) => {
-  try {
-    res.json({ msg: "Get single Account route" });
-  } catch (error) {
-    res.json(error);
-  }
-});
+accountsRoute.get("/:id", getAccountCtrl);
 
 //DELETE/api/v1/accounts/:id
-accountsRoute.delete("/:id", async (req, res) => {
-  try {
-    res.json({ msg: "Delete Account route" });
-  } catch (error) {
-    res.json(error);
-  }
-});
+accountsRoute.delete("/:id", deleteAccountCtrl);
 
 //PUT/api/v1/accounts/:id
-accountsRoute.put("/:id", async (req, res) => {
-  try {
-    res.json({ msg: "Update Account route" });
-  } catch (error) {
-    res.json(error);
-  }
-});
+accountsRoute.put("/:id", updateAccountCtrl);
 
 //GET/api/v1/accounts
-accountsRoute.get("/", async (req, res) => {
-  try {
-    res.json({ msg: "Get all Accounts route" });
-  } catch (error) {
-    res.json(error);
-  }
-});
+accountsRoute.get("/", getAccountsCtrl);
 
 module.exports = accountsRoute;
