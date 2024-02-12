@@ -1,50 +1,27 @@
 const express = require("express");
+const {
+  createTransactionCtrl,
+  getTransactionsCtrl,
+  getTransactionCtrl,
+  deleteTransactionCtrl,
+  updateTransactionCtrl,
+} = require("../../controllers/transactions/transactionsCtrl");
 
 const transactionsRoute = express.Router();
 
 //POST/api/v1/transctions
-transactionsRoute.post("/", async (req, res) => {
-  try {
-    res.json({ msg: "Create transaction route" });
-  } catch (error) {
-    res.json(error);
-  }
-});
+transactionsRoute.post("/", createTransactionCtrl);
 
 //GET/api/v1/transctions
-transactionsRoute.get("/", async (req, res) => {
-  try {
-    res.json({ msg: "Get transactions route" });
-  } catch (error) {
-    res.json(error);
-  }
-});
+transactionsRoute.get("/", getTransactionsCtrl);
 
 //GEt/api/v1/transctions/:id
-transactionsRoute.get("/:id", async (req, res) => {
-  try {
-    res.json({ msg: "Get a single transaction route" });
-  } catch (error) {
-    res.json(error);
-  }
-});
+transactionsRoute.get("/:id", getTransactionCtrl);
 
 //DELETE/api/v1/transctions/:id
-transactionsRoute.delete("/:id", async (req, res) => {
-  try {
-    res.json({ msg: "Delete transaction route" });
-  } catch (error) {
-    res.json(error);
-  }
-});
+transactionsRoute.delete("/:id", deleteTransactionCtrl);
 
 //PUT/api/v1/transctions/:id
-transactionsRoute.put("/:id", async (req, res) => {
-  try {
-    res.json({ msg: "Update transaction route" });
-  } catch (error) {
-    res.json(error);
-  }
-});
+transactionsRoute.put("/:id", updateTransactionCtrl);
 
 module.exports = transactionsRoute;
