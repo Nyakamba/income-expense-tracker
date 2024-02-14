@@ -5,6 +5,7 @@ require("dotenv").config();
 const usersRoute = require("./routes/users/usersRoute");
 const accountsRoute = require("./routes/accounts/accountsRoute");
 const transactionsRoute = require("./routes/transactions/transactionsRoute");
+const globalErrHandler = require("./middlewares/globalErrHandler");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("/api/v1/accounts", accountsRoute);
 app.use("/api/v1/transactions", transactionsRoute);
 
 //Error handlers
+app.use(globalErrHandler);
 
 //listen to server
 
