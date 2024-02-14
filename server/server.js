@@ -23,7 +23,7 @@ app.use("/api/v1/accounts", accountsRoute);
 //transactions route
 app.use("/api/v1/transactions", transactionsRoute);
 
-//error handlers
+//Error handlers
 
 //listen to server
 
