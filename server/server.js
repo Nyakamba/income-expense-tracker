@@ -27,7 +27,7 @@ app.use("/api/v1/transactions", transactionsRoute);
 
 //listen to server
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
   console.log(`Serve is up and running on port ${PORT}`);
 });
