@@ -2,12 +2,14 @@ const bcrypt = require("bcryptjs");
 const User = require("../../model/User");
 
 //register
-const registerUserCtrl = async (req, res) => {
+const registerUserCtrl = async (req, res, next) => {
   const { fullname, password, email } = req.body;
   try {
     //check is user exists
     const userFound = await User.findOne({ email });
-    if (userFound) return res.json({ message: "User Already Exist" });
+    if (userFound) {
+      next(new Error("User Already Exist"));
+    }
 
     //check if fields are empty
     if (!email || !password || !fullname)
@@ -34,8 +36,22 @@ const registerUserCtrl = async (req, res) => {
 
 //login
 const userLoginCtrl = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    res.json({ msg: "Login route" });
+    //check if email exist
+    const userFound = await User.findOne({ email });
+    if (!userFound) return res.json({ message: "Invalid login credentials" });
+
+    //check for password validity
+    const isPasswordMatch = await bcrypt.compare(password, userFound.password);
+    if (!isPasswordMatch)
+      return res.json({ message: "Invalid login credentials" });
+
+    res.json({
+      status: "success",
+      fullname: userFound.fullname,
+      id: userFound._id,
+    });
   } catch (error) {
     res.json(error);
   }
