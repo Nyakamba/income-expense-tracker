@@ -9,6 +9,7 @@ const transactionsRoute = require("./routes/transactions/transactionsRoute");
 const app = express();
 
 //middlewares
+app.use(express.json()); //pass incoming data
 
 //-----------
 //routes
