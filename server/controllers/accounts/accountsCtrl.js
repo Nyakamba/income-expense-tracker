@@ -59,7 +59,8 @@ const updateAccountCtrl = async (req, res) => {
 //get accounts
 const getAccountsCtrl = async (req, res) => {
   try {
-    res.json({ msg: "Get all Accounts route" });
+    const accounts = await Account.find().populate("transactions");
+    res.json(accounts);
   } catch (error) {
     res.json(error);
   }
