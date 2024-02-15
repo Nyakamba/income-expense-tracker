@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const User = require("../../model/User");
+const { appErr } = require("../../utils/appErr");
 
 //register
 const registerUserCtrl = async (req, res, next) => {
@@ -8,12 +9,9 @@ const registerUserCtrl = async (req, res, next) => {
     //check is user exists
     const userFound = await User.findOne({ email });
     if (userFound) {
-      next(new Error("User Already Exist"));
+      next(appErr("User Already Exist", 400));
     }
 
-    //check if fields are empty
-    if (!email || !password || !fullname)
-      return res.json({ message: "Pleas provide all fields" });
     //hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -30,7 +28,7 @@ const registerUserCtrl = async (req, res, next) => {
       id: user._id,
     });
   } catch (error) {
-    res.json(error);
+    next(appErr(error));
   }
 };
 
@@ -40,12 +38,11 @@ const userLoginCtrl = async (req, res) => {
   try {
     //check if email exist
     const userFound = await User.findOne({ email });
-    if (!userFound) return res.json({ message: "Invalid login credentials" });
+    if (!userFound) return next(appErr("Invalid login credentials", 400));
 
     //check for password validity
     const isPasswordMatch = await bcrypt.compare(password, userFound.password);
-    if (!isPasswordMatch)
-      return res.json({ message: "Invalid login credentials" });
+    if (!isPasswordMatch) return next(appErr("Invalid login credentials", 400));
 
     res.json({
       status: "success",
@@ -53,7 +50,7 @@ const userLoginCtrl = async (req, res) => {
       id: userFound._id,
     });
   } catch (error) {
-    res.json(error);
+    next(appErr(error));
   }
 };
 //profile
