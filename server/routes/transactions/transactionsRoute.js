@@ -6,11 +6,12 @@ const {
   deleteTransactionCtrl,
   updateTransactionCtrl,
 } = require("../../controllers/transactions/transactionsCtrl");
+const isLogin = require("../../middlewares/isLogin");
 
 const transactionsRoute = express.Router();
 
 //POST/api/v1/transctions
-transactionsRoute.post("/", createTransactionCtrl);
+transactionsRoute.post("/", isLogin, createTransactionCtrl);
 
 //GET/api/v1/transctions
 transactionsRoute.get("/", getTransactionsCtrl);
