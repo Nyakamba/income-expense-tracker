@@ -1,3 +1,5 @@
+const Account = require("../../model/Account");
+
 //create account
 const createAccountCtrl = async (req, res) => {
   try {
