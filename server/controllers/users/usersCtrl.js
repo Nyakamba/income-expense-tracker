@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const User = require("../../model/User");
 const { appErr } = require("../../utils/appErr");
+const generateToken = require("../../utils/generateToken");
 
 //register
 const registerUserCtrl = async (req, res, next) => {
@@ -48,6 +49,7 @@ const userLoginCtrl = async (req, res) => {
       status: "success",
       fullname: userFound.fullname,
       id: userFound._id,
+      token: generateToken(userFound._id),
     });
   } catch (error) {
     next(appErr(error));
