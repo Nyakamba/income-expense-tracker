@@ -22,7 +22,7 @@ usersRoute.get("/profile/", isLogin, userProfileCtrl);
 //DELETE/:id
 usersRoute.delete("/:id", deleteUserCtrl);
 
-//PUT/:id
-usersRoute.put("/:id", updateUserCtrl);
+//PUT/
+usersRoute.put("/", isLogin, updateUserCtrl);
 
 module.exports = usersRoute;
