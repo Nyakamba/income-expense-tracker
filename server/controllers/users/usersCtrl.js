@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../../model/User");
 const { appErr } = require("../../utils/appErr");
 const generateToken = require("../../utils/generateToken");
+const verifyToken = require("../../utils/verifyToken");
 
 //register
 const registerUserCtrl = async (req, res, next) => {
@@ -10,7 +11,7 @@ const registerUserCtrl = async (req, res, next) => {
     //check is user exists
     const userFound = await User.findOne({ email });
     if (userFound) {
-      next(appErr("User Already Exist", 400));
+      return next(appErr("User Already Exist", 400));
     }
 
     //hash password
@@ -34,7 +35,7 @@ const registerUserCtrl = async (req, res, next) => {
 };
 
 //login
-const userLoginCtrl = async (req, res) => {
+const userLoginCtrl = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     //check if email exist
@@ -57,6 +58,12 @@ const userLoginCtrl = async (req, res) => {
 };
 //profile
 const userProfileCtrl = async (req, res) => {
+  //how to get token from headers
+  const headerObj = req.headers;
+
+  const token = headerObj["authorization"].split(" ")[1];
+  const result = verifyToken(token);
+  console.log(result);
   try {
     res.json({ msg: "Profile route" });
   } catch (error) {
