@@ -58,9 +58,14 @@ const userLoginCtrl = async (req, res, next) => {
 };
 //profile
 const userProfileCtrl = async (req, res) => {
-  console.log(req.user);
   try {
-    const user = await User.findById(req.user);
+    const user = await User.findById(req.user).populate({
+      path: "accounts",
+      populate: {
+        path: "transactions",
+        model: "Transaction",
+      },
+    });
     res.json(user);
   } catch (error) {
     res.json(error);
