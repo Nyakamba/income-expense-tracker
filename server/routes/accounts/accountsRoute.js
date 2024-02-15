@@ -6,11 +6,12 @@ const {
   updateAccountCtrl,
   getAccountsCtrl,
 } = require("../../controllers/accounts/accountsCtrl");
+const isLogin = require("../../middlewares/isLogin");
 
 const accountsRoute = express.Router();
 
 //POST/api/v1/accounts
-accountsRoute.post("/", createAccountCtrl);
+accountsRoute.post("/", isLogin, createAccountCtrl);
 
 //GET/api/v1/accounts/:id
 accountsRoute.get("/:id", getAccountCtrl);

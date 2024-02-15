@@ -26,6 +26,7 @@ const accountSchema = new mongoose.Schema(
         "Loan",
         "Cash Flow",
         "Uncategorized",
+        "Education",
       ],
       required: true,
     },

@@ -1,11 +1,32 @@
 const Account = require("../../model/Account");
+const User = require("../../model/User");
+const { appErr } = require("../../utils/appErr");
 
 //create account
-const createAccountCtrl = async (req, res) => {
+const createAccountCtrl = async (req, res, next) => {
+  const { name, initialBalance, accountType, notes } = req.body;
   try {
-    res.json({ msg: "Create Account route" });
+    //find the logged user
+    const userFound = await User.findById(req.user);
+
+    if (!userFound) return next(appErr("User not found", 404));
+
+    //Create the account
+    const account = await Account.create({
+      name,
+      initialBalance,
+      accountType,
+      notes,
+      createdBy: req.user,
+    });
+
+    //Push the account into users account field
+    userFound.accounts.push(account._id);
+    //Reasve the user
+    await userFound.save();
+    res.json({ status: "success", data: account });
   } catch (error) {
-    res.json(error);
+    next(appErr(error));
   }
 };
 
