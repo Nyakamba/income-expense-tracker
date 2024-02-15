@@ -1,3 +1,7 @@
+const Account = require("../../model/Account");
+const Transaction = require("../../model/Transaction");
+const User = require("../../model/User");
+
 //create transaction
 const createTransactionCtrl = async (req, res) => {
   try {
