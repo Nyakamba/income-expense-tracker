@@ -81,9 +81,43 @@ const deleteUserCtrl = async (req, res) => {
 };
 
 //update
-const updateUserCtrl = async (req, res) => {
+const updateUserCtrl = async (req, res, next) => {
   try {
-    res.json({ msg: "Update route" });
+    //check if email exists
+    //if (req.body.email) {
+    const userFound = await User.findOne({ email: req.body.email });
+    if (userFound) return next(appErr("Email is taken", 400));
+    // }
+
+    //check if user is updating password
+    if (req.body.password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+      //update the user
+      const user = await User.findByIdAndUpdate(
+        req.user,
+        {
+          password: hashedPassword,
+        },
+        { new: true, runValidators: true }
+      );
+      //send response
+      return res.status(200).json({
+        status: "success",
+        data: user,
+      });
+    }
+
+    const user = await User.findByIdAndUpdate(req.user, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: user,
+    });
   } catch (error) {
     res.json(error);
   }
