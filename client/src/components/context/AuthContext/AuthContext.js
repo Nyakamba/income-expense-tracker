@@ -27,7 +27,7 @@ const AuthContextProvider = ({ children }) => {
   const loginUserAction = async (formData) => {
     const config = {
       headers: {
-        "Contet-Type": "application/json",
+        "Content-Type": "application/json",
       },
     };
     try {
