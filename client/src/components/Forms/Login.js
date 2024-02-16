@@ -1,7 +1,26 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { authContext } from "../context/AuthContext/AuthContext";
 const Login = () => {
   const { loginUserAction } = useContext(authContext);
+
+  //form data
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = formData;
+
+  ///onChange
+  const onChangeInput = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  //submit
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    loginUserAction(formData);
+  };
 
   return (
     <>
@@ -18,7 +37,7 @@ const Login = () => {
                 )}
               </p> */}
             </div>
-            <form>
+            <form onSubmit={onSubmitHandler}>
               <div className="mb-6">
                 <label
                   className="block mb-2 text-coolGray-800 font-medium"
@@ -27,6 +46,8 @@ const Login = () => {
                   Email
                 </label>
                 <input
+                  onChange={onChangeInput}
+                  value={email}
                   name="email"
                   className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lgshadow-md placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                   type="email"
@@ -41,6 +62,8 @@ const Login = () => {
                   Password
                 </label>
                 <input
+                  onChange={onChangeInput}
+                  value={password}
                   name="password"
                   className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lgshadow-md placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                   type="password"
