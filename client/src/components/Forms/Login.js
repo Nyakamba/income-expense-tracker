@@ -1,5 +1,8 @@
-import React from "react";
+import { useContext } from "react";
+import { authContext } from "../context/AuthContext/AuthContext";
 const Login = () => {
+  const { loginUserAction } = useContext(authContext);
+
   return (
     <>
       <section className="py-24 md:py-32 bg-white">
