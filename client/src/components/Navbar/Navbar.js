@@ -2,6 +2,7 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
+import logo from "../../assets/logo.png";
 
 export default function Navbar() {
   return (
@@ -24,13 +25,13 @@ export default function Navbar() {
                 </div>
                 <div className="flex flex-shrink-0 items-center">
                   <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    className="block h-9 w-9 lg:hidden rounded-full"
+                    src={logo}
                     alt="Your Company"
                   />
                   <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                    className="hidden h-10 w-10 lg:block rounded-full"
+                    src={logo}
                     alt="Your Company"
                   />
                 </div>
