@@ -26,43 +26,53 @@ const createAccountCtrl = async (req, res, next) => {
     await userFound.save();
     res.json({ status: "success", data: account });
   } catch (error) {
-    next(appErr(error));
+    next(appErr(error.message, 500));
   }
 };
 
 //get account
-const getAccountCtrl = async (req, res) => {
+const getAccountCtrl = async (req, res, next) => {
   try {
-    res.json({ msg: "Get single Account route" });
+    //find the id from params
+    const { id } = req.params;
+    console.log(id);
+    const account = await Account.findById(id).populate("transactions");
+    res.json({
+      staus: "success",
+      data: account,
+    });
   } catch (error) {
-    res.json(error);
+    next(appErr(error.message, 500));
   }
 };
 //delete account
-const deleteAccountCtrl = async (req, res) => {
+const deleteAccountCtrl = async (req, res, next) => {
   try {
     res.json({ msg: "Delete Account route" });
   } catch (error) {
-    res.json(error);
+    next(appErr(error.message, 500));
   }
 };
 
 //update account
-const updateAccountCtrl = async (req, res) => {
+const updateAccountCtrl = async (req, res, next) => {
   try {
+    //find account
+    const { id } = req.params;
+    const account=await Account.findByIdAndUpdate(id,{req.body},{new:true,})
     res.json({ msg: "Update Account route" });
   } catch (error) {
-    res.json(error);
+    next(appErr(error.message, 500));
   }
 };
 
 //get accounts
-const getAccountsCtrl = async (req, res) => {
+const getAccountsCtrl = async (req, res, next) => {
   try {
     const accounts = await Account.find().populate("transactions");
     res.json(accounts);
   } catch (error) {
-    res.json(error);
+    next(appErr(error.message, 500));
   }
 };
 module.exports = {
