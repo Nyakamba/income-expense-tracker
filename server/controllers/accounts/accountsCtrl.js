@@ -35,7 +35,7 @@ const getAccountCtrl = async (req, res, next) => {
   try {
     //find the id from params
     const { id } = req.params;
-    console.log(id);
+
     const account = await Account.findById(id).populate("transactions");
     res.json({
       staus: "success",
@@ -59,8 +59,11 @@ const updateAccountCtrl = async (req, res, next) => {
   try {
     //find account
     const { id } = req.params;
-    const account=await Account.findByIdAndUpdate(id,{req.body},{new:true,})
-    res.json({ msg: "Update Account route" });
+    const account = await Account.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    res.json({ status: "success", data: account });
   } catch (error) {
     next(appErr(error.message, 500));
   }

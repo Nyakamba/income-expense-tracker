@@ -20,7 +20,7 @@ accountsRoute.get("/:id", getAccountCtrl);
 accountsRoute.delete("/:id", deleteAccountCtrl);
 
 //PUT/api/v1/accounts/:id
-accountsRoute.put("/:id", updateAccountCtrl);
+accountsRoute.put("/:id", isLogin, updateAccountCtrl);
 
 //GET/api/v1/accounts
 accountsRoute.get("/", getAccountsCtrl);
