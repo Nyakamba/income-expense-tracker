@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const User = require("../../model/User");
 const { appErr } = require("../../utils/appErr");
 const generateToken = require("../../utils/generateToken");
-const verifyToken = require("../../utils/verifyToken");
 
 //register
 const registerUserCtrl = async (req, res, next) => {
@@ -30,7 +29,7 @@ const registerUserCtrl = async (req, res, next) => {
       id: user._id,
     });
   } catch (error) {
-    next(appErr(error));
+    next(appErr(error.message, 500));
   }
 };
 
@@ -53,7 +52,7 @@ const userLoginCtrl = async (req, res, next) => {
       token: generateToken(userFound._id),
     });
   } catch (error) {
-    next(appErr(error));
+    next(appErr(error.message, 500));
   }
 };
 //profile
@@ -68,15 +67,19 @@ const userProfileCtrl = async (req, res) => {
     });
     res.json(user);
   } catch (error) {
-    res.json(error);
+    next(appErr(error.message, 500));
   }
 };
 //delete
-const deleteUserCtrl = async (req, res) => {
+const deleteUserCtrl = async (req, res, next) => {
   try {
-    res.json({ msg: "Delete route" });
+    await User.findByIdAndDelete(req.user);
+    res.status(200).json({
+      status: "success",
+      data: null,
+    });
   } catch (error) {
-    res.json(error);
+    next(appErr(error.message, 500));
   }
 };
 
@@ -119,7 +122,7 @@ const updateUserCtrl = async (req, res, next) => {
       data: user,
     });
   } catch (error) {
-    res.json(error);
+    next(appErr(error.message, 500));
   }
 };
 module.exports = {
