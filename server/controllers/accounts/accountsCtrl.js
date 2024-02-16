@@ -48,7 +48,10 @@ const getAccountCtrl = async (req, res, next) => {
 //delete account
 const deleteAccountCtrl = async (req, res, next) => {
   try {
-    res.json({ msg: "Delete Account route" });
+    //find account
+    const { id } = req.params;
+    await Account.findByIdAndDelete(id);
+    res.json({ status: "success", data: null });
   } catch (error) {
     next(appErr(error.message, 500));
   }
