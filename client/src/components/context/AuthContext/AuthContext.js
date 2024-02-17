@@ -1,5 +1,6 @@
 import { createContext, useReducer } from "react";
 import axios from "axios";
+import { LOGIN_FAILED, LOGIN_SUCCESS } from "./authActionTypes";
 
 //auth context
 export const authContext = createContext();
@@ -15,7 +16,28 @@ const INITIAL_STATE = {
 //Auth reducer
 
 const reducer = (state, action) => {
-  return {};
+  const { type, payload } = action;
+  console.log(action);
+  switch (type) {
+    case LOGIN_SUCCESS:
+      //Add user to localstorage
+      localStorage.setItem("userAuth", JSON.stringify(payload));
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        userAuth: payload,
+      };
+    case LOGIN_FAILED:
+      return {
+        ...state,
+        error: payload,
+        loading: false,
+        userAuth: null,
+      };
+    default:
+      break;
+  }
 };
 
 //provider
@@ -37,14 +59,24 @@ const AuthContextProvider = ({ children }) => {
         config
       );
       console.log(res);
+      if (res?.data?.status === "success") {
+        dispatch({
+          type: "LOGIN_SUCCESS",
+          payload: res.data,
+        });
+      }
     } catch (error) {
-      console.log(error);
+      dispatch({
+        type: "LOGIN_FAILED",
+        payload: error?.response?.data?.message,
+      });
     }
   };
   return (
     <authContext.Provider
       value={{
         loginUserAction,
+        userAuth: state,
       }}
     >
       {children}
