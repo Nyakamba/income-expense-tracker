@@ -26,7 +26,7 @@ const AccountDashboard = () => {
       ) : (
         <>
           <AccountSummary />
-          <AccountList />
+          <AccountList accounts={profile?.accounts} />
         </>
       )}
     </>
