@@ -1,6 +1,7 @@
 import { createContext, useReducer } from "react";
 import axios from "axios";
 import { LOGIN_FAILED, LOGIN_SUCCESS } from "./authActionTypes";
+import { API_URL_USER } from "../../../utils/apiURL";
 
 //auth context
 export const authContext = createContext();
@@ -44,7 +45,7 @@ const reducer = (state, action) => {
 
 const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
-
+  console.log(state.userAuth.token);
   //login action
   const loginUserAction = async (formData) => {
     const config = {
@@ -53,11 +54,7 @@ const AuthContextProvider = ({ children }) => {
       },
     };
     try {
-      const res = await axios.post(
-        "http://localhost:9000/api/v1/users/login",
-        formData,
-        config
-      );
+      const res = await axios.post(`${API_URL_USER}/login`, formData, config);
 
       if (res?.data?.status === "success") {
         dispatch({
@@ -72,6 +69,21 @@ const AuthContextProvider = ({ children }) => {
       });
     }
   };
+
+  //profile action
+
+  const fetchProfileAction = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${state.userAuth.token}`,
+      },
+    };
+    try {
+      await axios.get(`${API_URL_USER}/profile`, config);
+    } catch (error) {}
+  };
+
   return (
     <authContext.Provider
       value={{
