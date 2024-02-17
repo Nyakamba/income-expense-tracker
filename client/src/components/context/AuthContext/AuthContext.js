@@ -1,6 +1,11 @@
 import { createContext, useReducer } from "react";
 import axios from "axios";
-import { LOGIN_FAILED, LOGIN_SUCCESS } from "./authActionTypes";
+import {
+  LOGIN_FAILED,
+  LOGIN_SUCCESS,
+  FETCH_PROFILE_FAIL,
+  FETCH_PROFILE_SUCCESS,
+} from "./authActionTypes";
 import { API_URL_USER } from "../../../utils/apiURL";
 
 //auth context
@@ -36,6 +41,21 @@ const reducer = (state, action) => {
         loading: false,
         userAuth: null,
       };
+    //profile
+    case FETCH_PROFILE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        profile: payload,
+      };
+    case FETCH_PROFILE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: payload,
+        profile: null,
+      };
     default:
       break;
   }
@@ -45,7 +65,7 @@ const reducer = (state, action) => {
 
 const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
-  console.log(state.userAuth.token);
+  console.log(state);
   //login action
   const loginUserAction = async (formData) => {
     const config = {
@@ -80,8 +100,20 @@ const AuthContextProvider = ({ children }) => {
       },
     };
     try {
-      await axios.get(`${API_URL_USER}/profile`, config);
-    } catch (error) {}
+      const res = await axios.get(`${API_URL_USER}/profile`, config);
+
+      if (res?.data?.state === "success") {
+        dispatch({
+          type: FETCH_PROFILE_SUCCESS,
+          payload: res.data,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: FETCH_PROFILE_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
   };
 
   return (
@@ -89,6 +121,8 @@ const AuthContextProvider = ({ children }) => {
       value={{
         loginUserAction,
         userAuth: state,
+        fetchProfileAction,
+        profile: state?.profile,
       }}
     >
       {children}
