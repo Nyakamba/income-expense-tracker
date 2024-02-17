@@ -1,6 +1,6 @@
 // import { useContext, useEffect } from "react";
 // import { authContext } from "../context/AuthContext/AuthContext";
-// import AccountList from "./AccountList";
+import AccountList from "./AccountList";
 import AccountSummary from "./AccountSummary";
 
 const AccountDashboard = () => {
@@ -25,7 +25,7 @@ const AccountDashboard = () => {
 
       <>
         <AccountSummary />
-        {/* <AccountList accounts={profile?.accounts} /> */}
+        <AccountList />
       </>
     </>
   );
