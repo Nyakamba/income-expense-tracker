@@ -7,7 +7,7 @@ export const authContext = createContext();
 
 //initial state
 const INITIAL_STATE = {
-  userAuth: null,
+  userAuth: JSON.parse(localStorage.getItem("userAuth")),
   error: null,
   loading: false,
   profile: null,
@@ -17,7 +17,7 @@ const INITIAL_STATE = {
 
 const reducer = (state, action) => {
   const { type, payload } = action;
-  console.log(action);
+
   switch (type) {
     case LOGIN_SUCCESS:
       //Add user to localstorage
@@ -58,16 +58,16 @@ const AuthContextProvider = ({ children }) => {
         formData,
         config
       );
-      console.log(res);
+
       if (res?.data?.status === "success") {
         dispatch({
-          type: "LOGIN_SUCCESS",
+          type: LOGIN_SUCCESS,
           payload: res.data,
         });
       }
     } catch (error) {
       dispatch({
-        type: "LOGIN_FAILED",
+        type: LOGIN_FAILED,
         payload: error?.response?.data?.message,
       });
     }
