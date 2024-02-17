@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { authContext } from "../context/AuthContext/AuthContext";
 const Login = () => {
   const { loginUserAction, userAuth } = useContext(authContext);
-
+  console.log(userAuth);
   //form data
   const [formData, setFormData] = useState({
     email: "",
