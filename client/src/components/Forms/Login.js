@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { authContext } from "../context/AuthContext/AuthContext";
 const Login = () => {
-  const { loginUserAction } = useContext(authContext);
+  const { loginUserAction, userAuth } = useContext(authContext);
 
   //form data
   const [formData, setFormData] = useState({
@@ -31,11 +31,11 @@ const Login = () => {
               <h3 className="mb-4 text-2xl md:text-3xl font-bold">
                 Sign in to your account
               </h3>
-              {/* <p>
+              <p>
                 {userAuth?.error && (
                   <span className="text-red-500">{userAuth?.error}</span>
                 )}
-              </p> */}
+              </p>
             </div>
             <form onSubmit={onSubmitHandler}>
               <div className="mb-6">
