@@ -65,7 +65,7 @@ const reducer = (state, action) => {
 
 const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
-  console.log(state);
+
   //login action
   const loginUserAction = async (formData) => {
     const config = {
@@ -102,7 +102,7 @@ const AuthContextProvider = ({ children }) => {
     try {
       const res = await axios.get(`${API_URL_USER}/profile`, config);
 
-      if (res?.data?.state === "success") {
+      if (res?.data) {
         dispatch({
           type: FETCH_PROFILE_SUCCESS,
           payload: res.data,
@@ -123,6 +123,7 @@ const AuthContextProvider = ({ children }) => {
         userAuth: state,
         fetchProfileAction,
         profile: state?.profile,
+        error: state.error,
       }}
     >
       {children}
