@@ -3,6 +3,8 @@ import axios from "axios";
 import {
   ACCOUNT_DETAILS_SUCCESS,
   ACCOUNT_DETAILS_FAIL,
+  ACCOUNT_CREATION_SUCCESS,
+  ACCOUNT_CREATION_FAIL,
 } from "./accountActionTypes";
 import { API_URL_ACC } from "../../../utils/apiURL";
 
@@ -21,6 +23,7 @@ const accountReducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    //details
     case ACCOUNT_DETAILS_SUCCESS:
       return {
         ...state,
@@ -29,6 +32,21 @@ const accountReducer = (state, action) => {
         loading: false,
       };
     case ACCOUNT_DETAILS_FAIL:
+      return {
+        ...state,
+        account: null,
+        error: payload,
+        loading: false,
+      };
+    //create
+    case ACCOUNT_CREATION_SUCCESS:
+      return {
+        ...state,
+        account: payload,
+        error: null,
+        loading: false,
+      };
+    case ACCOUNT_CREATION_FAIL:
       return {
         ...state,
         account: null,
@@ -50,7 +68,7 @@ const AccountContextProvider = ({ children }) => {
     const config = {
       headers: {
         Authorization: `Bearer ${state?.userAuth?.token}`,
-        ContentType: "application/json",
+        "Content-Type": "application/json",
       },
     };
     try {
@@ -70,9 +88,42 @@ const AccountContextProvider = ({ children }) => {
       });
     }
   };
+
+  //create account details action
+  const createAccountAction = async (formData) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${state?.userAuth?.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const res = await axios.post(`${API_URL_ACC}`, formData, config);
+      console.log(res);
+      //dispatch action
+      if (res?.data?.status === "success") {
+        dispatch({
+          type: ACCOUNT_CREATION_SUCCESS,
+          payload: res?.data?.data,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: ACCOUNT_CREATION_FAIL,
+        payload: error?.data?.response?.message,
+      });
+    }
+  };
   return (
     <accountContext.Provider
-      value={{ getAccountDetailsAction, account: state?.account }}
+      value={{
+        getAccountDetailsAction,
+        account: state?.account,
+        createAccountAction,
+        error: state?.error,
+      }}
     >
       {children}
     </accountContext.Provider>
