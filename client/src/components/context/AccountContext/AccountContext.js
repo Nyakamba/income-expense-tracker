@@ -100,7 +100,7 @@ const AccountContextProvider = ({ children }) => {
 
     try {
       const res = await axios.post(`${API_URL_ACC}`, formData, config);
-      console.log(res);
+
       //dispatch action
       if (res?.data?.status === "success") {
         dispatch({
@@ -109,7 +109,6 @@ const AccountContextProvider = ({ children }) => {
         });
       }
     } catch (error) {
-      console.log(error);
       dispatch({
         type: ACCOUNT_CREATION_FAIL,
         payload: error?.data?.response?.message,
