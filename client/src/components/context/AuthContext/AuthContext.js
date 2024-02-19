@@ -5,6 +5,7 @@ import {
   LOGIN_SUCCESS,
   FETCH_PROFILE_FAIL,
   FETCH_PROFILE_SUCCESS,
+  LOGOUT,
 } from "./authActionTypes";
 import { API_URL_USER } from "../../../utils/apiURL";
 
@@ -56,6 +57,14 @@ const reducer = (state, action) => {
         error: payload,
         profile: null,
       };
+    //logout
+    case LOGOUT:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        userAuth: null,
+      };
     default:
       break;
   }
@@ -82,6 +91,8 @@ const AuthContextProvider = ({ children }) => {
           payload: res.data,
         });
       }
+      //Redirect
+      window.location.href = "/dashboard";
     } catch (error) {
       dispatch({
         type: LOGIN_FAILED,
@@ -117,6 +128,12 @@ const AuthContextProvider = ({ children }) => {
   };
 
   //logout action
+  const logoutUserAction = () => {
+    dispatch({
+      type: LOGOUT,
+      payload: null,
+    });
+  };
 
   return (
     <authContext.Provider
