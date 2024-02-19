@@ -6,6 +6,8 @@ import {
   FETCH_PROFILE_FAIL,
   FETCH_PROFILE_SUCCESS,
   LOGOUT,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
 } from "./authActionTypes";
 import { API_URL_USER } from "../../../utils/apiURL";
 
@@ -26,6 +28,22 @@ const reducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    //register
+    case REGISTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        userAuth: payload,
+      };
+    case REGISTER_FAIL:
+      return {
+        ...state,
+        error: payload,
+        loading: false,
+        userAuth: null,
+      };
+
     case LOGIN_SUCCESS:
       //Add user to localstorage
       localStorage.setItem("userAuth", JSON.stringify(payload));
@@ -103,6 +121,36 @@ const AuthContextProvider = ({ children }) => {
     }
   };
 
+  //register action
+  const registerUserAction = async (formData) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await axios.post(
+        `${API_URL_USER}/register`,
+        formData,
+        config
+      );
+      console.log(res);
+      if (res?.data?.status === "success") {
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: res.data,
+        });
+      }
+      //Redirect
+      window.location.href = "/login";
+    } catch (error) {
+      dispatch({
+        type: REGISTER_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+
   //profile action
 
   const fetchProfileAction = async () => {
@@ -149,6 +197,7 @@ const AuthContextProvider = ({ children }) => {
         profile: state?.profile,
         error: state.error,
         logoutUserAction,
+        registerUserAction,
       }}
     >
       {children}
