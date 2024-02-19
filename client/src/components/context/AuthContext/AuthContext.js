@@ -116,6 +116,8 @@ const AuthContextProvider = ({ children }) => {
     }
   };
 
+  //logout action
+
   return (
     <authContext.Provider
       value={{

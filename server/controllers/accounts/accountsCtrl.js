@@ -38,7 +38,7 @@ const getAccountCtrl = async (req, res, next) => {
 
     const account = await Account.findById(id).populate("transactions");
     res.json({
-      staus: "success",
+      status: "success",
       data: account,
     });
   } catch (error) {
