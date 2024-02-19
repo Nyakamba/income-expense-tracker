@@ -7,6 +7,7 @@ const { appErr } = require("../../utils/appErr");
 const createTransactionCtrl = async (req, res, next) => {
   const { name, amount, notes, transactionType, account, category, createdBy } =
     req.body;
+
   try {
     //Find user
     const userFound = await User.findById(req.user);
@@ -31,7 +32,7 @@ const createTransactionCtrl = async (req, res, next) => {
     await accountFound.save();
     res.json({ status: "success", data: transaction });
   } catch (error) {
-    res.json(error);
+    next(appErr(error.message));
   }
 };
 
