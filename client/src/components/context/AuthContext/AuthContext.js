@@ -59,6 +59,8 @@ const reducer = (state, action) => {
       };
     //logout
     case LOGOUT:
+      //remove user from local storage
+      localStorage.removeItem("userAuth");
       return {
         ...state,
         loading: false,
@@ -107,7 +109,7 @@ const AuthContextProvider = ({ children }) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${state.userAuth.token}`,
+        Authorization: `Bearer ${state?.userAuth?.token}`,
       },
     };
     try {
@@ -133,6 +135,8 @@ const AuthContextProvider = ({ children }) => {
       type: LOGOUT,
       payload: null,
     });
+    //Redirect
+    window.location.href = "/login";
   };
 
   return (
@@ -143,6 +147,7 @@ const AuthContextProvider = ({ children }) => {
         fetchProfileAction,
         profile: state?.profile,
         error: state.error,
+        logoutUserAction,
       }}
     >
       {children}
