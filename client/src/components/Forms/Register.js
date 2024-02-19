@@ -1,6 +1,35 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { authContext } from "../context/AuthContext/AuthContext";
+
 const Register = () => {
+  const { registerUserAction, error } = useContext(authContext);
+  console.log(error);
+  //form date
+  const [formData, setFormData] = useState({
+    fullname: "",
+    email: "",
+    password: "",
+  });
+
+  //Destructure
+  const { fullname, email, password } = formData;
+
+  //onchange
+  const onchangeInput = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  //handle submit
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    if (!email || !password || !fullname) {
+      return alert("Please provide all details");
+    }
+
+    registerUserAction(formData);
+  };
+
   return (
     <>
       <section className="py-24 md:py-32 bg-white">
@@ -9,9 +38,10 @@ const Register = () => {
             <div className="mb-6 text-center">
               <h3 className="mb-4 text-2xl md:text-3xl font-bold">
                 Register for an account
-              </h3>
+              </h3>{" "}
+              <p>{error && <span className="text-red-500">{error}</span>}</p>
             </div>
-            <form>
+            <form onSubmit={onSubmitHandler}>
               <div className="mb-6">
                 <label
                   className="block mb-2 text-coolGray-800 font-medium"
@@ -20,7 +50,9 @@ const Register = () => {
                   Email
                 </label>
                 <input
+                  onChange={onchangeInput}
                   name="email"
+                  value={email}
                   className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                   type="email"
                   placeholder="i-novotek@gmail.com"
@@ -34,7 +66,9 @@ const Register = () => {
                   Full Name
                 </label>
                 <input
+                  onChange={onchangeInput}
                   name="fullname"
+                  value={fullname}
                   className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                   type="text"
                   placeholder="I-Nooovotek Academy"
@@ -48,6 +82,9 @@ const Register = () => {
                   Password
                 </label>
                 <input
+                  onChange={onchangeInput}
+                  name="password"
+                  value={password}
                   className="appearance-none block w-full p-3 leading-5 text-coolGray-900 border border-coolGray-200 rounded-lg shadow-sm placeholder-coolGray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                   type="password"
                   placeholder="************"
@@ -62,7 +99,13 @@ const Register = () => {
               </button>
               <p className="text-center">
                 <span className="text-xs font-medium">
-                  Already have an account? <Link to="/login">Sign in</Link>
+                  Already have an account?{" "}
+                  <Link
+                    to="/login"
+                    className="inline-block text-xs font-medium text-green-500 hover:text-green-600 hover:underline"
+                  >
+                    Sign in
+                  </Link>
                 </span>
               </p>
             </form>
