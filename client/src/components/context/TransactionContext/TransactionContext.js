@@ -3,7 +3,7 @@ import axios from "axios";
 import {
   TRANSACTION_CREATION_SUCCESS,
   TRANSACTION_CREATION_FAIL,
-} from "./transactionsActionTypes";
+} from "./transactionActionTypes";
 import { API_URL_TRANSACTION } from "../../../utils/apiURL";
 
 export const transactionContext = createContext();
