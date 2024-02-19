@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { authContext } from "../context/AuthContext/AuthContext";
+import { Link } from "react-router-dom";
 const Login = () => {
   const { loginUserAction, userAuth } = useContext(authContext);
   console.log(userAuth);
@@ -88,14 +89,14 @@ const Login = () => {
               </button>
               <p className="text-center">
                 <span className="text-xs font-medium">
-                  Don’t have an account? <a href="#">Sign up</a>
+                  Don’t have an account?{" "}
+                  <Link
+                    to="/register"
+                    className="inline-block text-xs font-medium text-green-500 hover:text-green-600 hover:underline"
+                  >
+                    Sign up
+                  </Link>
                 </span>
-                <button
-                  className="inline-block text-xs font-medium text-green-500 hover:text-green-600 hover:underline"
-                  type="submit"
-                >
-                  Sign up
-                </button>
               </p>
             </form>
           </div>
