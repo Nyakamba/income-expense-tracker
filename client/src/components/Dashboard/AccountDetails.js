@@ -7,7 +7,7 @@ import AllTransactions from "./AllTransactions";
 export default function AccountDetails() {
   const { getAccountDetailsAction, account } = useContext(accountContext);
   const { accountID } = useParams();
-  console.log(account);
+
   useEffect(() => {
     getAccountDetailsAction(accountID);
   }, [accountID]);
